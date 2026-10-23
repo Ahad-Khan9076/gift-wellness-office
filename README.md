@@ -4,7 +4,14 @@ Flutter web landing page for the GIFT University Wellness Center (mental health 
 
 ## Live site
 
-After deployment: **https://ahad-khan9076.github.io/gift-wellness-office/**
+**https://ahad-khan9076.github.io/gift-wellness-office/**
+
+Redeploy after changes:
+
+```bash
+chmod +x scripts/deploy_pages.sh
+./scripts/deploy_pages.sh
+```
 
 ## Local development
 
