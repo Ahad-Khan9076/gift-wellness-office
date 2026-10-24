@@ -16,6 +16,7 @@ cd "$DEPLOY_DIR"
 git init -b gh-pages
 git add -A
 git commit -m "Deploy Flutter web to GitHub Pages"
+git remote remove origin 2>/dev/null || true
 git remote add origin "https://github.com/${REPO}.git"
 git push -f origin gh-pages
 
