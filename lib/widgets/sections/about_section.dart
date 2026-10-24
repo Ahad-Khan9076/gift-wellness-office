@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_typography.dart';
 import '../../utils/responsive.dart';
-import '../../utils/section_keys.dart';
 import '../common/section_shell.dart';
 import '../common/soft_card.dart';
 
 class AboutSection extends StatelessWidget {
-  const AboutSection({super.key});
+  const AboutSection({super.key, required this.sectionKey});
+
+  final GlobalKey sectionKey;
 
   static const _treatments = [
     (
@@ -50,7 +51,7 @@ class AboutSection extends StatelessWidget {
     final isWide = context.screenWidth >= Breakpoints.tablet;
 
     return SectionShell(
-      sectionKey: SectionKeys.about,
+      sectionKey: sectionKey,
       backgroundColor: AppColors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

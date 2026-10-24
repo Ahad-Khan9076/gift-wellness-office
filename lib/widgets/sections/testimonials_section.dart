@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
 import '../../utils/responsive.dart';
-import '../../utils/section_keys.dart';
 import '../common/section_shell.dart';
 import '../common/soft_card.dart';
 
 class TestimonialsSection extends StatelessWidget {
-  const TestimonialsSection({super.key});
+  const TestimonialsSection({super.key, required this.sectionKey});
+
+  final GlobalKey sectionKey;
 
   static const _testimonials = [
     (
-      'I was scared someone would find out I was struggling. Here, I felt safe from day one — and my anxiety finally feels manageable.',
+      'I was scared someone would find out I was struggling. Here, I felt safe from day one, and my anxiety finally feels manageable.',
       5,
     ),
     (
@@ -34,14 +35,14 @@ class TestimonialsSection extends StatelessWidget {
     final columns = context.isMobile ? 1 : 2;
 
     return SectionShell(
-      sectionKey: SectionKeys.testimonials,
+      sectionKey: sectionKey,
       backgroundColor: AppColors.white,
       child: Column(
         children: [
           const SectionTitle(
             title: 'What Students Are Saying',
             subtitle:
-                'Real stories from GIFT students — shared with permission or anonymously.',
+                'Real stories from GIFT students, shared with permission or anonymously.',
           ),
           LayoutBuilder(
             builder: (context, constraints) {

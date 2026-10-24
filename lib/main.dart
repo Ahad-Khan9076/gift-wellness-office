@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'pages/landing_page.dart';
+import 'routes/app_routes.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -17,7 +17,8 @@ class GiftWellnessApp extends StatelessWidget {
       title: 'GIFT Wellness Office',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
-      home: const LandingPage(),
+      initialRoute: AppRoutes.home,
+      routes: AppRoutes.routes,
     );
   }
 }

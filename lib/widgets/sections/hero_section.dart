@@ -66,7 +66,7 @@ class HeroSection extends StatelessWidget {
                       ),
                       const SizedBox(height: 14),
                       Text(
-                        '— Dan Millman',
+                        'Dan Millman',
                         textAlign: TextAlign.center,
                         style: AppTypography.sourceSans(
                           fontSize: isMobile ? 14 : 15,

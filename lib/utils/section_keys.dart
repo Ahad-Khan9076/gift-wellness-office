@@ -1,9 +1,26 @@
 import 'package:flutter/material.dart';
 
-/// Global keys for in-page scroll navigation from the app bar.
-abstract final class SectionKeys {
-  static final about = GlobalKey();
-  static final therapists = GlobalKey();
-  static final testimonials = GlobalKey();
-  static final contact = GlobalKey();
+import 'landing_section_id.dart';
+
+/// Per–landing-page scroll keys (avoids GlobalKey clashes when routes rebuild).
+final class LandingSectionKeys {
+  final about = GlobalKey();
+  final therapists = GlobalKey();
+  final testimonials = GlobalKey();
+  final contact = GlobalKey();
+
+  GlobalKey forId(String id) {
+    switch (id) {
+      case LandingSectionId.about:
+        return about;
+      case LandingSectionId.therapists:
+        return therapists;
+      case LandingSectionId.testimonials:
+        return testimonials;
+      case LandingSectionId.contact:
+        return contact;
+      default:
+        return about;
+    }
+  }
 }

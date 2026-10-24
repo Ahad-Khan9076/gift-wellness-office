@@ -14,7 +14,7 @@ class FaqSection extends StatelessWidget {
     ),
     (
       'What are the fees for counseling sessions?',
-      'Therapy is a professional service with session fees. Rates and payment options are shared clearly and confidentially during booking — ask us anything; there is no pressure to commit before you feel ready.',
+      'Therapy is a professional service with session fees. Rates and payment options are shared clearly and confidentially during booking. Ask us anything; there is no pressure to commit before you feel ready.',
     ),
     (
       'Do I need a referral?',
@@ -22,7 +22,7 @@ class FaqSection extends StatelessWidget {
     ),
     (
       'What if I’m in crisis?',
-      'If you are in immediate danger or crisis, contact local emergency services or a trusted person right away. You can also message us for urgent guidance — we will prioritize your safety and connect you to appropriate help.',
+      'If you are in immediate danger or crisis, contact local emergency services or a trusted person right away. You can also message us for urgent guidance. We will prioritize your safety and connect you to appropriate help.',
     ),
     (
       'Will my parents or university know?',
@@ -41,7 +41,7 @@ class FaqSection extends StatelessWidget {
           const SectionTitle(
             title: 'Frequently Asked Questions',
             subtitle:
-                'Honest answers — because you deserve to know exactly how we protect and support you.',
+                'Honest answers, because you deserve to know exactly how we protect and support you.',
           ),
           SoftCard(
             padding: EdgeInsets.zero,

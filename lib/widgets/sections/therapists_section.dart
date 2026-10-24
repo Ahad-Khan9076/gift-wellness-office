@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
 import '../../utils/responsive.dart';
-import '../../utils/section_keys.dart';
 import '../common/section_shell.dart';
 import '../common/soft_card.dart';
 
 class TherapistsSection extends StatelessWidget {
-  const TherapistsSection({super.key});
+  const TherapistsSection({super.key, required this.sectionKey});
+
+  final GlobalKey sectionKey;
 
   /// Team listing — update titles, bios, photos, and experience when details are ready.
   static const _therapists = [
@@ -15,42 +16,42 @@ class TherapistsSection extends StatelessWidget {
       'Dr Zaibun Nissa',
       'Clinical Psychologist',
       'Profile details coming soon',
-      '—',
+      '',
       'Compassionate, confidential support for GIFT students and the wider community.',
     ),
     (
       'Dr Ather Mujtaba',
       'Clinical Psychologist',
       'Profile details coming soon',
-      '—',
+      '',
       'Compassionate, confidential support for GIFT students and the wider community.',
     ),
     (
       'Miss Sibgha Farrooqi',
       'Counseling Psychologist',
       'Profile details coming soon',
-      '—',
+      '',
       'Compassionate, confidential support for GIFT students and the wider community.',
     ),
     (
       'Miss Hifza',
       'Counseling Psychologist',
       'Profile details coming soon',
-      '—',
+      '',
       'Compassionate, confidential support for GIFT students and the wider community.',
     ),
     (
       'Miss Esha',
       'Counseling Psychologist',
       'Profile details coming soon',
-      '—',
+      '',
       'Compassionate, confidential support for GIFT students and the wider community.',
     ),
     (
       'Miss Amna',
       'Counseling Psychologist',
       'Profile details coming soon',
-      '—',
+      '',
       'Compassionate, confidential support for GIFT students and the wider community.',
     ),
   ];
@@ -61,13 +62,13 @@ class TherapistsSection extends StatelessWidget {
     final columns = context.isMobile ? 1 : (context.isTablet ? 2 : 3);
 
     return SectionShell(
-      sectionKey: SectionKeys.therapists,
+      sectionKey: sectionKey,
       child: Column(
         children: [
           const SectionTitle(
             title: 'Meet Our Therapists',
             subtitle:
-                'Experienced psychologists who care about your wellbeing — not labels or judgment.',
+                'Experienced psychologists who care about your wellbeing, not labels or judgment.',
           ),
           LayoutBuilder(
             builder: (context, constraints) {
@@ -103,7 +104,7 @@ class TherapistsSection extends StatelessWidget {
                               color: AppColors.headingNavy,
                             ),
                           ),
-                          if (t.$4 != '—') ...[
+                          if (t.$4.isNotEmpty) ...[
                             const SizedBox(height: 4),
                             Text(
                               'Experience: ${t.$4}',

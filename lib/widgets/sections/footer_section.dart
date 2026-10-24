@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
 import '../../utils/responsive.dart';
-import '../../utils/section_keys.dart';
+import '../../utils/landing_section_id.dart';
 import '../common/gift_logo.dart';
 
 class FooterSection extends StatelessWidget {
   const FooterSection({super.key, required this.onNavigate});
 
-  final void Function(GlobalKey key) onNavigate;
+  final void Function(String sectionId) onNavigate;
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +42,15 @@ class FooterSection extends StatelessWidget {
                     children: [
                       _FooterLink(
                         label: 'About',
-                        onTap: () => onNavigate(SectionKeys.about),
+                        onTap: () => onNavigate(LandingSectionId.about),
                       ),
                       _FooterLink(
                         label: 'Therapists',
-                        onTap: () => onNavigate(SectionKeys.therapists),
+                        onTap: () => onNavigate(LandingSectionId.therapists),
                       ),
                       _FooterLink(
                         label: 'Contact',
-                        onTap: () => onNavigate(SectionKeys.contact),
+                        onTap: () => onNavigate(LandingSectionId.contact),
                       ),
                     ],
                   ),

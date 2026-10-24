@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
-import '../../theme/app_typography.dart';
-
-/// Placeholder GIFT University logo.
-///
-/// Replace with: `Image.asset('assets/images/gift_logo.png')` once the official
-/// logo asset is added to [assets/images/].
+/// GIFT University logo from [assets/images/logo_gift.png].
 class GiftLogo extends StatelessWidget {
   const GiftLogo({
     super.key,
@@ -15,66 +9,35 @@ class GiftLogo extends StatelessWidget {
     this.onDarkBackground = false,
   });
 
+  static const _assetPath = 'assets/images/logo_gift.png';
+
   final double height;
   final bool compact;
   final bool onDarkBackground;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          height: height,
-          width: height * 1.1,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            gradient: const LinearGradient(
-              colors: [AppColors.primaryBlue, AppColors.secondaryBlue],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+    // Logo artwork is wider than tall; compact mode uses a shorter height in the nav.
+    final imageHeight = compact ? height * 0.85 : height;
+    final maxWidth = compact ? height * 2.4 : height * 3.2;
+
+    return Image.asset(
+      _assetPath,
+      height: imageHeight,
+      width: maxWidth,
+      fit: BoxFit.contain,
+      filterQuality: FilterQuality.high,
+      errorBuilder: (context, error, stackTrace) {
+        return SizedBox(
+          height: imageHeight,
+          width: maxWidth,
+          child: Icon(
+            Icons.image_not_supported_outlined,
+            size: imageHeight * 0.6,
+            color: onDarkBackground ? Colors.white54 : Colors.grey,
           ),
-          alignment: Alignment.center,
-          child: Text(
-            'G',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w800,
-              fontSize: height * 0.45,
-            ),
-          ),
-        ),
-        if (!compact) ...[
-          SizedBox(width: height * 0.25),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'GIFT University',
-                style: AppTypography.sourceSans(
-                  fontSize: height * 0.32,
-                  fontWeight: FontWeight.w700,
-                  color: onDarkBackground ? Colors.white : AppColors.primaryBlue,
-                  height: 1.1,
-                ),
-              ),
-              Text(
-                'Wellness Office',
-                style: AppTypography.sourceSans(
-                  fontSize: height * 0.22,
-                  fontWeight: FontWeight.w500,
-                  color: onDarkBackground
-                      ? Colors.white.withValues(alpha: 0.75)
-                      : AppColors.bodyGray,
-                  height: 1.1,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ],
+        );
+      },
     );
   }
 }

@@ -28,7 +28,7 @@ class BenefitsSection extends StatelessWidget {
       Icons.payments_outlined,
       AppColors.accentOrange,
       'Clear, Student-Friendly Fees',
-      'Professional sessions with transparent pricing — we’ll explain fees confidentially when you book.',
+      'Professional sessions with transparent pricing. We’ll explain fees confidentially when you book.',
     ),
     (
       '04',

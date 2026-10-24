@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_typography.dart';
 import '../../utils/responsive.dart';
-import '../../utils/section_keys.dart';
 import '../../utils/url_helper.dart';
 import '../common/section_shell.dart';
 
 class ContactSection extends StatelessWidget {
-  const ContactSection({super.key});
+  const ContactSection({super.key, required this.sectionKey});
+
+  final GlobalKey sectionKey;
 
   /// Update with official Wellness Office contact details.
   static const _whatsappNumber = '923001234567';
@@ -20,7 +21,7 @@ class ContactSection extends StatelessWidget {
     final isMobile = context.isMobile;
 
     return SectionShell(
-      sectionKey: SectionKeys.contact,
+      sectionKey: sectionKey,
       backgroundColor: AppColors.backgroundSoft,
       paddingVertical: 80,
       child: Column(
@@ -60,35 +61,25 @@ class ContactSection extends StatelessWidget {
           ),
           const SizedBox(height: 40),
           if (isMobile) ...[
-            _ContactPanel(
-              stretch: false,
-              onBook: () => _showBookingDialog(context),
-            ),
+            _ContactPanel(onBook: () => _showBookingDialog(context)),
             const SizedBox(height: 20),
-            _MessagePanel(
-              stretch: false,
-              onSubmit: () => _showBookingDialog(context),
-            ),
+            _MessagePanel(onSubmit: () => _showBookingDialog(context)),
           ] else
-            IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: _ContactPanel(
-                      stretch: true,
-                      onBook: () => _showBookingDialog(context),
-                    ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _ContactPanel(
+                    onBook: () => _showBookingDialog(context),
                   ),
-                  const SizedBox(width: 24),
-                  Expanded(
-                    child: _MessagePanel(
-                      stretch: true,
-                      onSubmit: () => _showBookingDialog(context),
-                    ),
+                ),
+                const SizedBox(width: 24),
+                Expanded(
+                  child: _MessagePanel(
+                    onSubmit: () => _showBookingDialog(context),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           const SizedBox(height: 28),
           Container(
@@ -150,7 +141,7 @@ class ContactSection extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text('Thank you for reaching out'),
         content: const Text(
-          'This demo form will connect to your booking system. For now, please use WhatsApp or email — our team will respond confidentially.',
+          'This demo form will connect to your booking system. For now, please use WhatsApp or email. Our team will respond confidentially.',
         ),
         actions: [
           TextButton(
@@ -171,9 +162,8 @@ class ContactSection extends StatelessWidget {
 }
 
 class _ContactPanel extends StatelessWidget {
-  const _ContactPanel({required this.stretch, required this.onBook});
+  const _ContactPanel({required this.onBook});
 
-  final bool stretch;
   final VoidCallback onBook;
 
   @override
@@ -181,7 +171,6 @@ class _ContactPanel extends StatelessWidget {
     final theme = Theme.of(context);
 
     return _PanelShell(
-      stretch: stretch,
       accent: AppColors.primaryBlue,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -189,7 +178,7 @@ class _ContactPanel extends StatelessWidget {
           Text('Get in touch', style: theme.textTheme.titleLarge),
           const SizedBox(height: 8),
           Text(
-            'Reach us directly — we respond with care and discretion.',
+            'Reach us directly. We respond with care and discretion.',
             style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 22),
@@ -216,7 +205,6 @@ class _ContactPanel extends StatelessWidget {
             onTap: () {},
             accent: AppColors.accentOrange,
           ),
-          if (stretch) const Spacer(),
           const SizedBox(height: 24),
           SizedBox(
             width: double.infinity,
@@ -239,9 +227,8 @@ class _ContactPanel extends StatelessWidget {
 }
 
 class _MessagePanel extends StatelessWidget {
-  const _MessagePanel({required this.stretch, required this.onSubmit});
+  const _MessagePanel({required this.onSubmit});
 
-  final bool stretch;
   final VoidCallback onSubmit;
 
   @override
@@ -249,7 +236,6 @@ class _MessagePanel extends StatelessWidget {
     final theme = Theme.of(context);
 
     return _PanelShell(
-      stretch: stretch,
       accent: AppColors.accentOrange,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -257,7 +243,7 @@ class _MessagePanel extends StatelessWidget {
           Text('Quick message', style: theme.textTheme.titleLarge),
           const SizedBox(height: 8),
           Text(
-            'Share your name and preferred contact — we’ll reach out privately to schedule your session.',
+            'Share your name and preferred contact. We’ll reach out privately to schedule your session.',
             style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 22),
@@ -269,7 +255,6 @@ class _MessagePanel extends StatelessWidget {
             decoration: _fieldDecoration('Email or phone'),
             keyboardType: TextInputType.emailAddress,
           ),
-          if (stretch) const Spacer(),
           const SizedBox(height: 22),
           Align(
             alignment: Alignment.centerLeft,
@@ -284,7 +269,7 @@ class _MessagePanel extends StatelessWidget {
                   borderRadius: BorderRadius.circular(999),
                 ),
               ),
-              child: const Text('Send — we’ll reply confidentially'),
+              child: const Text('Send message'),
             ),
           ),
         ],
@@ -321,19 +306,16 @@ class _MessagePanel extends StatelessWidget {
 class _PanelShell extends StatelessWidget {
   const _PanelShell({
     required this.child,
-    required this.stretch,
     required this.accent,
   });
 
   final Widget child;
-  final bool stretch;
   final Color accent;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: stretch ? double.infinity : null,
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(20),
@@ -350,21 +332,13 @@ class _PanelShell extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: stretch ? MainAxisSize.max : MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(height: 4, color: accent),
-            if (stretch)
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 22, 24, 24),
-                  child: child,
-                ),
-              )
-            else
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 22, 24, 24),
-                child: child,
-              ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 22, 24, 24),
+              child: child,
+            ),
           ],
         ),
       ),

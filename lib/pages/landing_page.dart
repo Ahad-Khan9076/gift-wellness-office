@@ -22,6 +22,8 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   final _scrollController = ScrollController();
+  final _sectionKeys = LandingSectionKeys();
+  bool _handledRouteSection = false;
 
   void _scrollToSection(GlobalKey key) {
     final context = key.currentContext;
@@ -34,7 +36,22 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  void _bookSession() => _scrollToSection(SectionKeys.contact);
+  void _scrollToId(String id) => _scrollToSection(_sectionKeys.forId(id));
+
+  void _bookSession() => _scrollToSection(_sectionKeys.contact);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_handledRouteSection) return;
+    final arg = ModalRoute.of(context)?.settings.arguments;
+    if (arg is! String) return;
+    _handledRouteSection = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _scrollToId(arg);
+    });
+  }
 
   @override
   void dispose() {
@@ -57,20 +74,28 @@ class _LandingPageState extends State<LandingPage> {
             surfaceTintColor: Colors.transparent,
             automaticallyImplyLeading: false,
             flexibleSpace: WellnessNavBar(
-              onNavigate: _scrollToSection,
+              onNavigate: _scrollToId,
               onBookSession: _bookSession,
             ),
           ),
           const SliverToBoxAdapter(child: HeroSection()),
-          const SliverToBoxAdapter(child: AboutSection()),
+          SliverToBoxAdapter(
+            child: AboutSection(sectionKey: _sectionKeys.about),
+          ),
           const SliverToBoxAdapter(child: BenefitsSection()),
-          const SliverToBoxAdapter(child: TherapistsSection()),
-          const SliverToBoxAdapter(child: TestimonialsSection()),
+          SliverToBoxAdapter(
+            child: TherapistsSection(sectionKey: _sectionKeys.therapists),
+          ),
+          SliverToBoxAdapter(
+            child: TestimonialsSection(sectionKey: _sectionKeys.testimonials),
+          ),
           const SliverToBoxAdapter(child: HowItWorksSection()),
           const SliverToBoxAdapter(child: FaqSection()),
-          const SliverToBoxAdapter(child: ContactSection()),
           SliverToBoxAdapter(
-            child: FooterSection(onNavigate: _scrollToSection),
+            child: ContactSection(sectionKey: _sectionKeys.contact),
+          ),
+          SliverToBoxAdapter(
+            child: FooterSection(onNavigate: _scrollToId),
           ),
         ],
       ),

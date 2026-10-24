@@ -8,7 +8,7 @@ class HowItWorksSection extends StatelessWidget {
   const HowItWorksSection({super.key});
 
   static const _steps = [
-    (1, Icons.touch_app_outlined, 'Reach Out / Book Appointment', 'Message us or book online — we’ll respond with care and discretion.'),
+    (1, Icons.touch_app_outlined, 'Reach Out / Book Appointment', 'Message us or book online. We’ll respond with care and discretion.'),
     (2, Icons.privacy_tip_outlined, 'Confidential Intake Session', 'Share what feels comfortable. We listen and understand your needs.'),
     (3, Icons.route_outlined, 'Personalized Support Plan', 'Together we set gentle, realistic goals that fit your life as a student.'),
     (4, Icons.trending_up_rounded, 'Ongoing Care & Growth', 'Regular sessions, check-ins, and tools for lasting wellbeing.'),
@@ -24,7 +24,7 @@ class HowItWorksSection extends StatelessWidget {
         children: [
           const SectionTitle(
             title: 'How It Works',
-            subtitle: 'Four simple steps — you’re never rushed, and you’re always in control.',
+            subtitle: 'Four simple steps. You’re never rushed, and you’re always in control.',
           ),
           Flex(
             direction: isMobile ? Axis.vertical : Axis.horizontal,

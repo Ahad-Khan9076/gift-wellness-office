@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../routes/app_routes.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_typography.dart';
 import '../../utils/responsive.dart';
-import '../../utils/section_keys.dart';
+import '../../utils/landing_section_id.dart';
 import '../common/gift_logo.dart';
 
 class WellnessNavBar extends StatelessWidget implements PreferredSizeWidget {
@@ -11,16 +12,18 @@ class WellnessNavBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.onNavigate,
     required this.onBookSession,
+    this.isGiftHealsPage = false,
   });
 
-  final void Function(GlobalKey key) onNavigate;
+  final void Function(String sectionId) onNavigate;
   final VoidCallback onBookSession;
+  final bool isGiftHealsPage;
 
-  static final _items = [
-    ('About', SectionKeys.about),
-    ('Therapists', SectionKeys.therapists),
-    ('Testimonials', SectionKeys.testimonials),
-    ('Contact', SectionKeys.contact),
+  static const _items = [
+    ('About', LandingSectionId.about),
+    ('Therapists', LandingSectionId.therapists),
+    ('Testimonials', LandingSectionId.testimonials),
+    ('Contact', LandingSectionId.contact),
   ];
 
   @override
@@ -41,16 +44,24 @@ class WellnessNavBar extends StatelessWidget implements PreferredSizeWidget {
             child: _PillShell(
               child: Row(
                 children: [
-                  const GiftLogo(height: 34),
+                  InkWell(
+                    onTap: () => AppRoutes.openHome(context),
+                    borderRadius: BorderRadius.circular(12),
+                    child: const GiftLogo(height: 34),
+                  ),
                   const Spacer(),
                   if (context.showDesktopNav) ...[
                     _NavLinkPillGroup(
                       items: _items,
                       onNavigate: onNavigate,
                     ),
+                    const SizedBox(width: 10),
+                    _GiftHealsNavPill(active: isGiftHealsPage),
                     const SizedBox(width: 12),
                     _BookPillButton(onPressed: onBookSession),
                   ] else ...[
+                    _GiftHealsNavPill(active: isGiftHealsPage, compact: true),
+                    const SizedBox(width: 8),
                     _IconPillButton(
                       icon: Icons.menu_rounded,
                       onPressed: () => _openMobileMenu(context),
@@ -90,6 +101,8 @@ class WellnessNavBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               const SizedBox(height: 20),
+              _GiftHealsNavPill(active: isGiftHealsPage, expand: true),
+              const SizedBox(height: 12),
               for (final item in _items)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
@@ -100,7 +113,8 @@ class WellnessNavBar extends StatelessWidget implements PreferredSizeWidget {
                         borderRadius: BorderRadius.circular(999),
                       ),
                       title: Text(item.$1),
-                      trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+                      trailing:
+                          const Icon(Icons.arrow_forward_ios_rounded, size: 14),
                       onTap: () {
                         Navigator.pop(ctx);
                         onNavigate(item.$2);
@@ -121,6 +135,73 @@ class WellnessNavBar extends StatelessWidget implements PreferredSizeWidget {
         );
       },
     );
+  }
+}
+
+class _GiftHealsNavPill extends StatefulWidget {
+  const _GiftHealsNavPill({
+    required this.active,
+    this.compact = false,
+    this.expand = false,
+  });
+
+  final bool active;
+  final bool compact;
+  final bool expand;
+
+  @override
+  State<_GiftHealsNavPill> createState() => _GiftHealsNavPillState();
+}
+
+class _GiftHealsNavPillState extends State<_GiftHealsNavPill> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final bg = widget.active
+        ? AppColors.calmingGreen
+        : (_hovered
+            ? AppColors.calmingGreen.withValues(alpha: 0.15)
+            : AppColors.calmingGreen.withValues(alpha: 0.1));
+    final fg = widget.active ? Colors.white : AppColors.calmingGreen;
+
+    final pill = MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: Material(
+        color: bg,
+        borderRadius: BorderRadius.circular(999),
+        child: InkWell(
+          onTap: () => AppRoutes.openGiftHeals(context),
+          borderRadius: BorderRadius.circular(999),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: widget.compact ? 14 : 18,
+              vertical: widget.compact ? 10 : 12,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.healing_rounded, size: 18, color: fg),
+                const SizedBox(width: 8),
+                Text(
+                  'GIFT Heals',
+                  style: AppTypography.sourceSans(
+                    fontSize: widget.compact ? 13 : 14,
+                    fontWeight: FontWeight.w600,
+                    color: fg,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    if (widget.expand) return SizedBox(width: double.infinity, child: pill);
+    return pill;
   }
 }
 
@@ -165,8 +246,8 @@ class _NavLinkPillGroup extends StatelessWidget {
     required this.onNavigate,
   });
 
-  final List<(String, GlobalKey)> items;
-  final void Function(GlobalKey key) onNavigate;
+  final List<(String, String)> items;
+  final void Function(String sectionId) onNavigate;
 
   @override
   Widget build(BuildContext context) {
@@ -214,9 +295,7 @@ class _NavLinkPillState extends State<_NavLinkPill> {
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: Material(
-        color: _hovered
-            ? AppColors.white
-            : Colors.transparent,
+        color: _hovered ? AppColors.white : Colors.transparent,
         borderRadius: BorderRadius.circular(999),
         child: InkWell(
           onTap: widget.onTap,
